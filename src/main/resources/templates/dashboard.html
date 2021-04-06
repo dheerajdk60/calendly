@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .perEvent{
+            height: 3cm;
+            background-color: #444444;
+            color: white;
+            margin:20px;
+            border-radius: 20px;
+            border :2px solid greenyellow;
+            text-align: center;
+        }
+        .container{
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 33% 33% 33%;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    [[${userId}]]
+    dashboard
+
+    <a th:href="@{'/event/create/'+${userId}}">Create Event</a>
+    <a th:href="@{'/event/create/'+${userId}}">Booked Events</a>
+    <div class="container">
+
+        <div th:each="event:${events}">
+            <div class="perEvent">
+                <div th:text="${event.name}"></div>
+                <div th:text="${event.description}"></div>
+                <div th:text="${event.durationUnit}"></div>
+                <div th:text="${event.eventCreatedAt}"></div>
+                <div th:text="${event.eventLife}"></div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

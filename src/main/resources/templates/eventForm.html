@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<form  th:action="@{/event/insert}" th:object="${event}">
+    <input th:type="hidden" name="userId" th:value="${userId}">
+    Event Name <input th:type="text" th:field="*{name}"><br><br>
+    Event Description <input th:type="text" th:field="*{description}"><br><br>
+    Event duration <input th:type="text" th:field="*{durationUnit}"><br><br>
+    Event eventLife <input th:type="text" th:field="*{eventLife}"><br><br>
+    <button id="button" type="submit">Add availability</button>
+    <div id="parentElement">
+
+    </div>
+    <input th:type="submit">
+</form>
+<script>
+    const b=document.getElementById("button");
+    b.addEventListener("click",(e)=>{
+        e.preventDefault();
+        addInputLine();
+    })
+    function addInputLine() {
+        var div = document.createElement("div");
+
+        var inputFrom = document.createElement("input");
+        inputFrom.setAttribute("type","text");
+        inputFrom.setAttribute("name","fromTime");
+
+        var inputTo = document.createElement("input");
+        inputTo.setAttribute("type","text");
+        inputTo.setAttribute("name","toTime");
+
+        div.appendChild(inputFrom);
+        div.appendChild(inputTo);
+        document.getElementById("parentElement").appendChild(div);     // Append it to the parent
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>[[${event.id}]]</div>
+    <div>[[${event.name}]]</div>
+    <div>[[${event.description}]]</div>
+    <div>[[${event.durationUnit}]]</div>
+    <div>[[${event.eventCreatedAt}]]</div>
+    <div>[[${event.eventLife}]]</div>
+    <div class="container">
+        <div th:each="date:${dates}">
+            [[${date}]]
+            <a th:href="@{'/date/'+${event.getId()}+'/'+${sessionUserId}+'/'+${''+date}  } " >Select Hour</a>
+            <br>
+        </div>
+    </div>
+</body>
+</html>

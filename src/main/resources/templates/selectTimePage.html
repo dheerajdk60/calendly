@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:each="time:${times}">
+        [[${time}]]
+        <a th:href="@{'/appointment/'+${eventId}+'/'+${sessionUserId}+'/'+${date}+'/'+${time}}">book now</a>
+    </div>
+</body>
+</html>
