@@ -122,7 +122,7 @@ public class FrontController {
                 {
                     if(appointmentTime.getUser().getId()==sessionUserId||appointmentTime.getUser().getId()==host.getId()&&
                         appointmentTime.getDate().isEqual(date)&&
-                            localTime.isAfter(appointmentTime.getFromTime().minusMinutes(1))&&
+                            localTime.plusMinutes(durationUnit-1).isAfter(appointmentTime.getFromTime().minusMinutes(1))&&
                             localTime.isBefore(appointmentTime.getToTime()))
                     {
                         flag=true;
@@ -146,6 +146,16 @@ public class FrontController {
     public String book(@PathVariable("userId") int userId, Model model, HttpSession session) {
         int sessionUserId = (int) session.getAttribute("sessionUserId");
         Optional<User> optional = userService.findById(userId);
+        User user = optional.get();
+        List<Event> events = user.getEvents();
+        model.addAttribute("events", events);
+        model.addAttribute("sessionUserId", sessionUserId);
+        return "/showEvents";
+    }
+    @GetMapping("/{userName}")
+    public String userName(@PathVariable("userName") String userName, Model model, HttpSession session) {
+        int sessionUserId = (int) session.getAttribute("sessionUserId");
+        Optional<User> optional = userService.findByName(userName);
         User user = optional.get();
         List<Event> events = user.getEvents();
         model.addAttribute("events", events);
