@@ -18,7 +18,7 @@ public class Event {
     private int durationUnit;
     private LocalDate eventCreatedAt;
     private int eventLife;
-
+    private int cancellationTime = 30;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "user_id")
     private User user;
@@ -115,5 +115,13 @@ public class Event {
 
     public void setAllowedTimes(List<AllowedTime> allowedTimes) {
         this.allowedTimes = allowedTimes;
+    }
+
+    public int getCancellationTime() {
+        return cancellationTime;
+    }
+
+    public void setCancellationTime(int cancellationTime) {
+        this.cancellationTime = cancellationTime;
     }
 }
