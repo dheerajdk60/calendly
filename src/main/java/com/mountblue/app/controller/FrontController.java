@@ -112,32 +112,6 @@ public class FrontController {
         return "/showEvents";
     }
 
-    @GetMapping("/appointment/{eventId}/{sessionUserId}/{date}/{time}")
-    public String appoint(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("time") String timeStr, @PathVariable("date") String dateStr, Model model, HttpSession session) {
-        Event event = eventService.findById(eventId).get();
-        int duration = event.getDurationUnit();
 
-        LocalTime time = LocalTime.parse(timeStr);
-        LocalDate date = LocalDate.parse(dateStr);
-
-        AppointmentTime appointmentTime = new AppointmentTime();
-        appointmentTime.setDate(date);
-        appointmentTime.setFromTime(time);
-        appointmentTime.setToTime(time.plusMinutes(duration));
-
-        event.addAppointmentTime(appointmentTime);
-        eventService.saveEvent(event);
-
-        User host = event.getUser();
-        User client = userService.findById(sessionUserId).get();
-
-        host.addAppointmentTime(appointmentTime);
-        userService.saveUser(host);
-
-        client.addAppointmentTime(appointmentTime);
-        userService.saveUser(client);
-
-        return "redirect:/";
-    }
 
 }

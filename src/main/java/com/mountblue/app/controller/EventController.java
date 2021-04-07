@@ -91,11 +91,9 @@ public class EventController {
     }
     @GetMapping("/appointments/{userId}")
     public String appointments(@PathVariable("userId") int userId, Model model) {
-
         List<AppointmentTime> appointmentTimes=appointmentService.findAppointmentsByUserId(userId);
-        System.out.println(appointmentTimes);
-        model.addAttribute("appointmentTimes", appointmentTimes);
 
+        model.addAttribute("appointmentTimes", appointmentTimes);
         return "appointments";
     }
 

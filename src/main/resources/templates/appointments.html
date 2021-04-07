@@ -10,7 +10,7 @@
             border-radius:20px ;
             margin: 20px;
             border: black 2px solid;
-            height: 4cm;
+            height: 5cm;
             text-align: center;
         }
     </style>
@@ -25,7 +25,7 @@
     <br>
     On the Date : [[${appointmentTime.getDate()}]]<br>
     Timings : [[${appointmentTime.getFromTime()}]] to [[${appointmentTime.getToTime()}]]<br>
-
+    <a th:href="@{'/appointment/delete/'+${appointmentTime.getId()}}">Cancel Appointment</a>
 </div>
 </body>
 </html>
