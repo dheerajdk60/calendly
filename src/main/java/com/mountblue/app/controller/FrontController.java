@@ -78,6 +78,7 @@ public class FrontController {
     public String showEvent(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, Model model, HttpSession session) {
         Optional<Event> optional = eventService.findById(eventId);
         Event event = optional.get();
+
         List<LocalDate> dates = new ArrayList<LocalDate>();
         LocalDate i = LocalDate.now();
         while (i.isBefore(event.getEventCreatedAt().plusDays(event.getEventLife()))) {
@@ -92,16 +93,8 @@ public class FrontController {
 
     @GetMapping("/date/{eventId}/{sessionUserId}/{m}/{d}/{y}")
     public String date(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("m") int m, @PathVariable("d") int d, @PathVariable("y") int y, Model model, HttpSession session) {
-        boolean flag=false;
+        boolean flag = false;
         LocalDate date = LocalDate.of(2000 + y, m, d);
-       /* ArrayList<Integer> times = new ArrayList<>(Arrays.asList(9, 10, 11, 12, 13, 14, 15, 16, 17));
-
-        User host = eventService.findById(eventId).get().getUser();
-        User client = userService.findById(sessionUserId).get();
-        List<Integer> hostTime = host.getAppointmentTimes().stream().filter(a -> a.getDate().isEqual(date)).map(a -> a.getTime()).collect(Collectors.toList());
-        List<Integer> clientTime = client.getAppointmentTimes().stream().filter(a -> a.getDate().isEqual(date)).map(a -> a.getTime()).collect(Collectors.toList());
-        times.removeAll(hostTime);
-        times.removeAll(clientTime);*/
 
         Event event = eventService.findById(eventId).get();
 
@@ -113,26 +106,24 @@ public class FrontController {
         List<AllowedTime> allowedTimes = event.getAllowedTimes();
         Collections.sort(allowedTimes);
 
-        List<AppointmentTime> appointmentTimes=host.getAppointmentTimes();
+        List<AppointmentTime> appointmentTimes = host.getAppointmentTimes();
 
         List<LocalTime> times = new ArrayList<LocalTime>();
         for (AllowedTime allowedTime : allowedTimes) {
             for (LocalTime localTime = allowedTime.getFromTime(); localTime.isBefore(allowedTime.getToTime().minusMinutes(durationUnit - 1)); localTime = localTime.plusMinutes(15)) {
-                for (AppointmentTime appointmentTime:appointmentTimes)
-                {
-                    if(appointmentTime.getUser().getId()==sessionUserId||appointmentTime.getUser().getId()==host.getId()&&
-                        appointmentTime.getDate().isEqual(date)&&
-                            localTime.plusMinutes(durationUnit-1).isAfter(appointmentTime.getFromTime().minusMinutes(1))&&
-                            localTime.isBefore(appointmentTime.getToTime()))
-                    {
-                        flag=true;
+                for (AppointmentTime appointmentTime : appointmentTimes) {
+                    if (appointmentTime.getUser().getId() == sessionUserId || appointmentTime.getUser().getId() == host.getId() &&
+                            appointmentTime.getDate().isEqual(date) &&
+                            localTime.plusMinutes(durationUnit - 1).isAfter(appointmentTime.getFromTime().minusMinutes(1)) &&
+                            localTime.isBefore(appointmentTime.getToTime())) {
+                        flag = true;
                         break;
                     }
                 }
-                if(!flag) {
+                if (!flag) {
                     times.add(localTime);
                 }
-                flag=false;
+                flag = false;
             }
         }
         model.addAttribute("times", times);
@@ -142,22 +133,14 @@ public class FrontController {
         return "selectTimePage";
     }
 
-    @GetMapping("/book/{userId}")
-    public String book(@PathVariable("userId") int userId, Model model, HttpSession session) {
-        int sessionUserId = (int) session.getAttribute("sessionUserId");
-        Optional<User> optional = userService.findById(userId);
-        User user = optional.get();
-        List<Event> events = user.getEvents();
-        model.addAttribute("events", events);
-        model.addAttribute("sessionUserId", sessionUserId);
-        return "/showEvents";
-    }
     @GetMapping("/{userName}")
     public String userName(@PathVariable("userName") String userName, Model model, HttpSession session) {
         int sessionUserId = (int) session.getAttribute("sessionUserId");
+
         Optional<User> optional = userService.findByName(userName);
         User user = optional.get();
         List<Event> events = user.getEvents();
+
         model.addAttribute("events", events);
         model.addAttribute("sessionUserId", sessionUserId);
         return "/showEvents";

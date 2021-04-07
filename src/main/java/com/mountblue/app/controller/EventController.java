@@ -23,8 +23,8 @@ import java.util.Optional;
 @RequestMapping("/event")
 public class EventController {
 
-    public static final int HOUR=0;
-    public static final int MINUTE=1;
+    public static final int HOUR = 0;
+    public static final int MINUTE = 1;
 
     @Autowired
     EventService eventService;
@@ -32,42 +32,41 @@ public class EventController {
     UserService userService;
 
     @GetMapping("/create/{userId}")
-    public String eventCreate(@PathVariable("userId") int userId, Model model)
-    {
-        Event event=new Event();
+    public String eventCreate(@PathVariable("userId") int userId, Model model) {
+        Event event = new Event();
 
-        model.addAttribute("userId",userId);
-        model.addAttribute("event",event);
+        model.addAttribute("userId", userId);
+        model.addAttribute("event", event);
 
         return "eventForm";
     }
+
     @GetMapping("/insert")
     public String eventInsert(@RequestParam("userId") int userId,
-                              @ModelAttribute("event")Event event,
+                              @ModelAttribute("event") Event event,
                               Model model,
                               @RequestParam String[] fromTime,
-                              @RequestParam String[] toTime)
-    {
-        Optional<User> optional =userService.findById(userId);
-        User user=optional.get();
+                              @RequestParam String[] toTime) {
+        Optional<User> optional = userService.findById(userId);
+        User user = optional.get();
 
         event.setEventCreatedAt(LocalDate.now());
-        for(int i=0;i< toTime.length;i++)
-        {
-            AllowedTime allowedTime=new AllowedTime();
 
-            String from[]=fromTime[i].split("[^0-9]");
-            String to[]=toTime[i].split("[^0-9]");
+        for (int i = 0; i < toTime.length; i++) {
+            AllowedTime allowedTime = new AllowedTime();
 
-            allowedTime.setFromTime(LocalTime.parse(from[HOUR]+":"+(MINUTE<from.length?from[MINUTE]:"00")));
-            allowedTime.setToTime(LocalTime.parse(to[HOUR]+":"+(MINUTE<to.length?to[MINUTE]:"00")));
+            String from[] = fromTime[i].split("[^0-9]");
+            String to[] = toTime[i].split("[^0-9]");
+
+            allowedTime.setFromTime(LocalTime.parse(from[HOUR] + ":" + (MINUTE < from.length ? from[MINUTE] : "00")));
+            allowedTime.setToTime(LocalTime.parse(to[HOUR] + ":" + (MINUTE < to.length ? to[MINUTE] : "00")));
 
             event.addAllowedTime(allowedTime);
         }
         user.addEvent(event);
         userService.saveUser(user);
 
-        return "redirect:/dashboard/"+userId;
+        return "redirect:/dashboard/" + userId;
     }
 
 }

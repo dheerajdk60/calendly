@@ -15,24 +15,23 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AppointmentTime> appointmentTimes;
 
     public void addEvent(Event event) {
-        if(events==null)
-        {
-            events=new ArrayList<Event>();
+        if (events == null) {
+            events = new ArrayList<Event>();
         }
         event.setUser(this);
         events.add(event);
     }
+
     public void addAppointmentTime(AppointmentTime appointmentTime) {
-        if(appointmentTimes==null)
-        {
-            appointmentTimes=new ArrayList<AppointmentTime>();
+        if (appointmentTimes == null) {
+            appointmentTimes = new ArrayList<AppointmentTime>();
         }
         appointmentTime.setUser(this);
         appointmentTimes.add(appointmentTime);

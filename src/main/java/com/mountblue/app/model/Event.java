@@ -19,17 +19,16 @@ public class Event {
     private LocalDate eventCreatedAt;
     private int eventLife;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name="user_id")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AllowedTime> allowedTimes;
 
     public void addAllowedTime(AllowedTime allowedTime) {
-        if(allowedTimes==null)
-        {
-            allowedTimes=new ArrayList<AllowedTime>();
+        if (allowedTimes == null) {
+            allowedTimes = new ArrayList<AllowedTime>();
         }
         allowedTime.setEvent(this);
         allowedTimes.add(allowedTime);

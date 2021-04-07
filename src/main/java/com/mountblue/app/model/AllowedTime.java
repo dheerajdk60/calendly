@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table
-public class AllowedTime implements Comparable<AllowedTime>{
+public class AllowedTime implements Comparable<AllowedTime> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -13,8 +13,8 @@ public class AllowedTime implements Comparable<AllowedTime>{
     private LocalTime fromTime;
     private LocalTime toTime;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name="event_id")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "event_id")
     private Event event;
 
     public int getId() {
