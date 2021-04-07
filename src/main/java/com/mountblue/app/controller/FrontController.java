@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 import com.mountblue.app.model.*;
+import com.mountblue.app.service.AppointmentService;
 import com.mountblue.app.service.EventService;
 import com.mountblue.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class FrontController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @GetMapping("/")
     public String home(Model model) {
 
@@ -37,32 +41,11 @@ public class FrontController {
         return "register";
     }
 
-    @GetMapping("/addUser")
-    public String addUser(@ModelAttribute("user") User user) {
-
-        userService.saveUser(user);
-        return "redirect:/";
-    }
 
     @GetMapping("/login")
     public String login() {
 
         return "login";
-    }
-
-    @GetMapping("/check")
-    public String check(@RequestParam("name") String name, @RequestParam("password") String pass, Model model, HttpSession session) {
-
-        Optional<User> optional = userService.findByName(name);
-        if (optional.isPresent()) {
-            User user = optional.get();
-            if (user.getPassword().equals(pass)) {
-                session.setAttribute("sessionUserId", user.getId());
-                model.addAttribute("user", user);
-                return "redirect:/dashboard/" + user.getId();
-            }
-        }
-        return "redirect:/login";
     }
 
     @GetMapping("/dashboard/{userId}")
@@ -72,23 +55,6 @@ public class FrontController {
         List<Event> events = eventService.findEventByUserId(userId);
         model.addAttribute("events", events);
         return "dashboard";
-    }
-
-    @GetMapping("/showEvent/{eventId}/{sessionUserId}")
-    public String showEvent(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, Model model, HttpSession session) {
-        Optional<Event> optional = eventService.findById(eventId);
-        Event event = optional.get();
-
-        List<LocalDate> dates = new ArrayList<LocalDate>();
-        LocalDate i = LocalDate.now();
-        while (i.isBefore(event.getEventCreatedAt().plusDays(event.getEventLife()))) {
-            dates.add(i);
-            i = i.plusDays(1);
-        }
-        model.addAttribute("event", event);
-        model.addAttribute("sessionUserId", sessionUserId);
-        model.addAttribute("dates", dates);
-        return "/showEvent";
     }
 
     @GetMapping("/date/{eventId}/{sessionUserId}/{m}/{d}/{y}")
@@ -159,6 +125,9 @@ public class FrontController {
         appointmentTime.setFromTime(time);
         appointmentTime.setToTime(time.plusMinutes(duration));
 
+        event.addAppointmentTime(appointmentTime);
+        eventService.saveEvent(event);
+
         User host = event.getUser();
         User client = userService.findById(sessionUserId).get();
 
@@ -170,4 +139,5 @@ public class FrontController {
 
         return "redirect:/";
     }
+
 }

@@ -32,7 +32,7 @@
             <div th:text="${event.durationUnit}"></div>
             <div th:text="${event.eventCreatedAt}"></div>
             <div th:text="${event.eventLife}"></div>
-            <a th:href="@{'/showEvent/'+${event.id}+'/'+${sessionUserId}}">Book thiis</a>
+            <a th:href="@{'/event/show/'+${event.id}+'/'+${sessionUserId}}">Book thiis</a>
         </div>
 
     </div>

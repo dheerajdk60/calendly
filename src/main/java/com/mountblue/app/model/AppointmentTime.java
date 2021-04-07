@@ -19,6 +19,10 @@ public class AppointmentTime {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "event_id")
+    private Event event;
+
 
     public int getId() {
         return id;
@@ -58,5 +62,23 @@ public class AppointmentTime {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    @Override
+    public String toString() {
+        return "AppointmentTime{" +
+                "id=" + id +
+                ", date=" + date +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                '}';
     }
 }

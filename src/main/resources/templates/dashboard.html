@@ -26,9 +26,13 @@
     dashboard
 
     <a th:href="@{'/event/create/'+${userId}}">Create Event</a>
-    <a th:href="@{'/event/create/'+${userId}}">Booked Events</a>
+    <a th:href="@{'/event/appointments/'+${userId}}">Appointments</a>
+    <br>
+    <br>
+    <form th:action="@{/user/search}">
+        <input type="text" name="name"><input type="submit" value="search">
+    </form>
     <div class="container">
-
         <div th:each="event:${events}">
             <div class="perEvent">
                 <div th:text="${event.name}"></div>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .each{
+            background-color: #333333;
+            color: white;
+            border-radius:20px ;
+            margin: 20px;
+            border: black 2px solid;
+            height: 4cm;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="each" th:each="appointmentTime:${appointmentTimes}">
+    Event Name : [[${appointmentTime.getEvent().getName()}]]<br>
+    Host Name : [[${appointmentTime.getEvent().getUser().getName()}]]<br>
+    Event duration : [[${appointmentTime.getEvent().getDurationUnit()}]]<br>
+    Event is alive for : [[${appointmentTime.getEvent().getEventLife()}]]<br>
+    Event Created At : [[${appointmentTime.getEvent().getEventCreatedAt()}]]<br>
+    <br>
+    On the Date : [[${appointmentTime.getDate()}]]<br>
+    Timings : [[${appointmentTime.getFromTime()}]] to [[${appointmentTime.getToTime()}]]<br>
+
+</div>
+</body>
+</html>

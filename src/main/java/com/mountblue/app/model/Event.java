@@ -26,12 +26,23 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AllowedTime> allowedTimes;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AppointmentTime> appointmentTimes;
+
     public void addAllowedTime(AllowedTime allowedTime) {
         if (allowedTimes == null) {
             allowedTimes = new ArrayList<AllowedTime>();
         }
         allowedTime.setEvent(this);
         allowedTimes.add(allowedTime);
+    }
+
+    public void addAppointmentTime(AppointmentTime appointmentTime) {
+        if (appointmentTime == null) {
+            appointmentTimes = new ArrayList<AppointmentTime>();
+        }
+        appointmentTime.setEvent(this);
+        appointmentTimes.add(appointmentTime);
     }
 
     public int getId() {
@@ -92,6 +103,14 @@ public class Event {
 
     public List<AllowedTime> getAllowedTimes() {
         return allowedTimes;
+    }
+
+    public List<AppointmentTime> getAppointmentTimes() {
+        return appointmentTimes;
+    }
+
+    public void setAppointmentTimes(List<AppointmentTime> appointmentTimes) {
+        this.appointmentTimes = appointmentTimes;
     }
 
     public void setAllowedTimes(List<AllowedTime> allowedTimes) {

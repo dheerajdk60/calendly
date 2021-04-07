@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <div class="content">
-        <form th:action="@{/addUser}" th:object="${user}">
+        <form th:action="@{/user/add}" th:object="${user}">
             Name:      <input class="title" th:type="text" th:field="*{name}"><br><br>
             Email :    <input class="excerpt" th:type="text" th:field="*{email}"><br><br>
             Password :   <input class="content" th:type="password" th:field="*{password}"><br><br>

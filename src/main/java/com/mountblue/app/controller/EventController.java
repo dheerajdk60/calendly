@@ -1,8 +1,10 @@
 package com.mountblue.app.controller;
 
 import com.mountblue.app.model.AllowedTime;
+import com.mountblue.app.model.AppointmentTime;
 import com.mountblue.app.model.Event;
 import com.mountblue.app.model.User;
+import com.mountblue.app.service.AppointmentService;
 import com.mountblue.app.service.EventService;
 import com.mountblue.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +30,12 @@ public class EventController {
     public static final int MINUTE = 1;
 
     @Autowired
-    EventService eventService;
+    private EventService eventService;
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @GetMapping("/create/{userId}")
     public String eventCreate(@PathVariable("userId") int userId, Model model) {
@@ -40,7 +46,22 @@ public class EventController {
 
         return "eventForm";
     }
+    @GetMapping("/show/{eventId}/{sessionUserId}")
+    public String showEvent(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, Model model, HttpSession session) {
+        Optional<Event> optional = eventService.findById(eventId);
+        Event event = optional.get();
 
+        List<LocalDate> dates = new ArrayList<LocalDate>();
+        LocalDate i = LocalDate.now();
+        while (i.isBefore(event.getEventCreatedAt().plusDays(event.getEventLife()))) {
+            dates.add(i);
+            i = i.plusDays(1);
+        }
+        model.addAttribute("event", event);
+        model.addAttribute("sessionUserId", sessionUserId);
+        model.addAttribute("dates", dates);
+        return "/showEvent";
+    }
     @GetMapping("/insert")
     public String eventInsert(@RequestParam("userId") int userId,
                               @ModelAttribute("event") Event event,
@@ -67,6 +88,15 @@ public class EventController {
         userService.saveUser(user);
 
         return "redirect:/dashboard/" + userId;
+    }
+    @GetMapping("/appointments/{userId}")
+    public String appointments(@PathVariable("userId") int userId, Model model) {
+
+        List<AppointmentTime> appointmentTimes=appointmentService.findAppointmentsByUserId(userId);
+        System.out.println(appointmentTimes);
+        model.addAttribute("appointmentTimes", appointmentTimes);
+
+        return "appointments";
     }
 
 }
