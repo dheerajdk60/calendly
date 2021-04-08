@@ -4,28 +4,177 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .each{
-            background-color: #333333;
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #111;
+        }
+        .container{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            flex-wrap: wrap;
+            top:30px;
+        }
+        .container .box
+        {
+            position: relative;
+            width: 320px;
+            height: 500px;
+            color: #fff;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 30px;
+            transition: 0.5s;
+
+        }
+        .container .box:hover
+        {
+            transform: translateY( -20px);
+        }
+        .container .box::before
+        {
+            content: '';
+            position: absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+        }
+        .container .box::after
+        {
+            content: '';
+            position: absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+            filter:blur(30px);
+        }
+        /*  .container .box:nth-child(2)::before,
+          .container .box:nth-child(2)::after{
+              background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+          }*/
+
+        .container .box span{
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            bottom: 6px;
+            right: 6px;
+            background:rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .container .box span::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left:0;
+            width: 50%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+        .container .box .content
+        {
+            position: relative;
+            z-index: 10;
+            padding: 20px 40px;
+        }
+        .container .box .content h2
+        {
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 30px;
+
+        }
+        .container .box .content p
+        {
+            font-size: 1.1em;
+            color: #fff;
+            line-height: 1.1em;
+        }
+        .container .box .content a
+        {
+            display: inline-block;
+            font-size: 1.1em;
+            color: #111;
+            background: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        a,input[type="submit"] {
+            margin: 10px;
+            display: inline-block;
+            font-size: 1.1em;
+            color: #111;
+            background: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        input[type="text"]
+        {
+            font-size: 1.3em;
+            border-radius: 0;
+            height: 1cm;
+            width: 4cm;
+        }
+        .announcement{
+            position:relative;
+            font-size: 30px;
             color: white;
-            border-radius:20px ;
-            margin: 20px;
-            border: black 2px solid;
-            height: 5cm;
-            text-align: center;
+            left:300px;
+            z-index: 2;
+        }
+        .announcementBlack
+        {
+            position: relative;
+            color: #222;
+            font-size: 83px;
+            z-index: 1;
+        }
+        red{
+            color: red;
+            text-transform: capitalize;
         }
     </style>
 </head>
 <body>
-<div class="each" th:each="appointmentTime:${appointmentTimes}">
-    Event Name : [[${appointmentTime.getEvent().getName()}]]<br>
-    Host Name : [[${appointmentTime.getEvent().getUser().getName()}]]<br>
-    Event duration : [[${appointmentTime.getEvent().getDurationUnit()}]]<br>
-    Event is alive for : [[${appointmentTime.getEvent().getEventLife()}]]<br>
-    Event Created At : [[${appointmentTime.getEvent().getEventCreatedAt()}]]<br>
-    <br>
-    On the Date : [[${appointmentTime.getDate()}]]<br>
-    Timings : [[${appointmentTime.getFromTime()}]] to [[${appointmentTime.getToTime()}]]<br>
-    <a th:href="@{'/appointment/delete/'+${appointmentTime.getId()}}">Cancel Appointment</a>
-</div>
+    <div class="container">
+        <div th:if="${appointmentTimes.size()==0}" class="content"><h1 class="announcement">No Appointments Yet!!!</h1><h1 class="announcementBlack">No Appointments Yet!!!</h1></div>
+        <div class="box" th:each="appointmentTime:${appointmentTimes}">
+        <span></span>
+        <div class="content">
+            <h2>[[${appointmentTime.getEvent().getName()}]]</h2><br>
+            <p>Host Name : <red>[[${appointmentTime.getEvent().getUser().getName()}]]</red></p><br>
+            <p>Event duration : <red>[[${appointmentTime.getEvent().getDurationUnit()}]]</red></p><br>
+            <p>Event is alive for : <red>[[${appointmentTime.getEvent().getEventLife()}]]</red></p><br>
+            <p>Event Created At : <red>[[${appointmentTime.getEvent().getEventCreatedAt()}]]</red></p><br>
+            <br>
+            <p>On the Date : <red>[[${appointmentTime.getDate()}]]</red></p><br>
+            <p>Timings : <red>[[${appointmentTime.getFromTime()}]]</red> to <red>[[${appointmentTime.getToTime()}]]</red></p><br>
+            <a th:href="@{'/appointment/delete/'+${appointmentTime.getId()}}">Cancel Appointment</a>
+        </div>
+        </div>
+    </div>
 </body>
 </html>

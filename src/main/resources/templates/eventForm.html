@@ -3,21 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            min-height: 100vh;
+            height: fit-content;
+            background-color: #111;
+            background: -moz-linear-gradient(290deg,#6e2176,#ac0101);
+        }
+        .name{
+            display: inline-block;
+            position: relative;
+            top:10px;
+            color: white;
+            font-weight: 700;
+            height: 1cm;
+            transition: 0.3s;
+        }
+        .name:hover{
+            color: black;
+        }
+        .container{
+            margin: auto;
+            width: 35%;
+            min-height: 70%;
+        }
+        .form{
+            position: relative;
+            top:10px;
+            background: rgba(0,0,0,0.2);
+            min-height: 70%;
+            border-radius: 0 0 15px 15px;
+            padding: 10px;
 
+        }
+
+        .newevent{
+            position: relative;
+            color: white;
+            font-weight: 800;
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            height: 1.5cm;
+            font-size: 20px;
+            transition: 0.2s;
+
+        }
+        .newevent:hover{
+            background-color: white;
+            color: black;
+        }
+        h2{
+            position: relative;
+            top:15px;
+        }
+        .input{
+            position: absolute;
+            right: 10px;
+            border-radius: 0px;
+            border: 3px solid #333333;
+            height: 1cm;
+        }
+        .submit{
+            position: relative;
+            margin-left: 37%;
+            margin-top:30px;
+            margin-bottom:30px;
+            width:3cm;
+            text-align: left;
+            font-weight: 700;
+            padding-left: 0;
+            border:1px solid #33ffdd;
+            padding:5px;
+            transition: 0.5s;
+        }
+        .submit:hover{
+            color: white;
+        }
+        .time{
+            margin: auto;
+            border-radius: 0;
+            height: 1cm;
+            width:2cm;
+            margin-left: 100px;
+            margin-top:10px ;
+            text-align: center;
+        }
+        #button{
+            text-align: left;
+            padding-left: 0;
+            font-weight: 700;
+            border:1px solid #33ffdd;
+            padding:5px;
+            transition: 0.5s;
+        }
+        #button:hover{
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<form  th:action="@{/event/insert}" th:object="${event}">
-    <input th:type="hidden" name="userId" th:value="${userId}">
-    Event Name <input th:type="text" th:field="*{name}"><br><br>
-    Event Description <input th:type="text" th:field="*{description}"><br><br>
-    Event duration <input th:type="text" th:field="*{durationUnit}"><br><br>
-    Event eventLife <input th:type="text" th:field="*{eventLife}"><br><br>
-    <button id="button" type="submit">Add availability</button>
-    <div id="parentElement">
-
+<div class="container">
+    <div class="newevent"><h2>New Event</h2></div>
+    <div class="form">
+        <form  th:action="@{/event/insert}" th:object="${event}">
+            <input th:type="hidden" name="userId" th:value="${userId}">
+            <div class="name">Event Name</div> <input class="input" th:type="text" th:field="*{name}"><br><br>
+            <div class="name">Event Description</div> <input class="input" th:type="text" th:field="*{description}"><br><br>
+            <div class="name">Event duration</div> <input class="input" th:type="text" th:field="*{durationUnit}"><br><br>
+            <div class="name">Event eventLife</div> <input class="input" th:type="text" th:field="*{eventLife}"><br><br>
+             <div class="name"> Event Cancellation time </div> <input class="input" th:type="text" th:field="*{cancellationTime}"><br><br>
+            <button id="button" type="submit">Add availability</button>
+            <div id="parentElement"></div>
+            <input  class="submit" th:type="submit" value="Create Event">
+        </form>
     </div>
-    <input th:type="submit">
-</form>
+</div>
 <script>
     const b=document.getElementById("button");
     b.addEventListener("click",(e)=>{
@@ -30,10 +137,14 @@
         var inputFrom = document.createElement("input");
         inputFrom.setAttribute("type","text");
         inputFrom.setAttribute("name","fromTime");
+        inputFrom.setAttribute("class","time");
+        inputFrom.setAttribute("placeholder","From");
 
         var inputTo = document.createElement("input");
         inputTo.setAttribute("type","text");
         inputTo.setAttribute("name","toTime");
+        inputTo.setAttribute("class","time");
+        inputTo.setAttribute("placeholder","To");
 
         div.appendChild(inputFrom);
         div.appendChild(inputTo);

@@ -14,4 +14,6 @@ public interface AppointmentService {
     void save(AppointmentTime appointmentTime);
 
     void deleteMeeting(LocalDate date, LocalTime fromTime, LocalTime toTime, int eventId);
+
+    void removeAppointments(List<AppointmentTime> oldAppointments);
 }

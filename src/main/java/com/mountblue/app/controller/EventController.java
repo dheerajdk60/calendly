@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -92,7 +93,9 @@ public class EventController {
     @GetMapping("/appointments/{userId}")
     public String appointments(@PathVariable("userId") int userId, Model model) {
         List<AppointmentTime> appointmentTimes=appointmentService.findAppointmentsByUserId(userId);
-
+        List<AppointmentTime> oldAppointments=appointmentTimes.stream().filter(appointment->appointment.getDate().isBefore(LocalDate.now())||appointment.getDate().isEqual(LocalDate.now())&&appointment.getFromTime().isBefore(LocalTime.now())).collect(Collectors.toList());
+        appointmentService.removeAppointments(oldAppointments);
+        appointmentTimes.removeAll(oldAppointments);
         model.addAttribute("appointmentTimes", appointmentTimes);
         return "appointments";
     }

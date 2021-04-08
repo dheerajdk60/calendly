@@ -40,4 +40,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointmentTimeRepository.deleteAll(deleteAppointments);
     }
+
+    @Override
+    public void removeAppointments(List<AppointmentTime> oldAppointments) {
+        for(AppointmentTime appointment:oldAppointments)
+        {
+            deleteMeeting(appointment.getDate(),appointment.getFromTime(),appointment.getToTime(),appointment.getEvent().getId());
+        }
+    }
 }

@@ -5,12 +5,106 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            height: fit-content;
+            background-color: #111;
+            background: -moz-linear-gradient(290deg,#6e2176,#ac0101);
+        }
+        .name{
+            display: inline-block;
+            position: relative;
+            top:10px;
+            color: white;
+            font-weight: 700;
+            height: 1cm;
+            transition: 0.3s;
+        }
+        .name:hover{
+            color: black;
+        }
+        .container{
+            margin-top: auto;
+            margin-bottom: auto;
+            margin: auto;
+            width: 35%;
+            min-height: 70%;
+        }
+        .form{
+            position: relative;
+            top:10px;
+            background: rgba(0,0,0,0.2);
+            min-height: 70%;
+            border-radius: 0 0 15px 15px;
+            padding: 10px;
+
+        }
+
+        .newevent{
+            position: relative;
+            color: white;
+            font-weight: 800;
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            height: 1.5cm;
+            font-size: 20px;
+            transition: 0.2s;
+
+        }
+        .newevent:hover{
+            background-color: white;
+            color: black;
+        }
+        h2{
+            position: relative;
+            top:15px;
+        }
+        .input{
+            position: absolute;
+            right: 10px;
+            border-radius: 0px;
+            border: 3px solid #333333;
+            height: 1cm;
+        }
+        .submit{
+            position: relative;
+            margin-left: 37%;
+            margin-top:30px;
+            margin-bottom:30px;
+            width:3cm;
+            text-align: left;
+            font-weight: 700;
+            padding-left: 0;
+            border:1px solid #33ffdd;
+            padding:5px;
+            transition: 0.5s;
+        }
+        .submit:hover{
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/user/check}" >
-    <input th:type="text" name="name">
-    <input th:type="text" name="password">
-    <input th:type="submit" th:value="login">
-</form>
+    <div class="container">
+        <div class="newevent"><h2>Login</h2></div>
+        <div class="form">
+            <form th:action="@{/user/check}" >
+                <div class="name">Name</div><input th:type="text" name="name" class="input"><br>
+                <div class="name">Password</div><input th:type="password" name="password" class="input"><br>
+                <input class="submit" th:type="submit" th:value="Login">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -3,19 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #111;
+            background: -moz-linear-gradient(290deg,#555555,#000000);
+        }
+        .container{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            flex-wrap: wrap;
+            top:30px;
+        }
+
+        a {
+            transition: 0.5s;
+            margin: 10px;
+            display: inline-block;
+            font-size: 1.1em;
+            color: #111;
+            background: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+
+        }
+        a:hover
+        {
+            transform: scale(1.1);
+            background: -moz-linear-gradient(45deg,#33ff52,#33ffdd);
+        }
+    </style>
 </head>
 <body>
-    <div>[[${event.id}]]</div>
+   <!-- <div>[[${event.id}]]</div>
     <div>[[${event.name}]]</div>
     <div>[[${event.description}]]</div>
     <div>[[${event.durationUnit}]]</div>
     <div>[[${event.eventCreatedAt}]]</div>
-    <div>[[${event.eventLife}]]</div>
+    <div>[[${event.eventLife}]]ife}]]</div>-->
     <div class="container">
         <div th:each="date:${dates}">
-            [[${date}]]
-            <a th:href="@{'/date/'+${event.getId()}+'/'+${sessionUserId}+'/'+${''+date}  } " >Select Hour</a>
-            <br>
+            <a th:href="@{'/date/'+${event.getId()}+'/'+${sessionUserId}+'/'+${''+date}  } " >[[${date}]]</a>
         </div>
     </div>
 </body>

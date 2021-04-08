@@ -42,7 +42,6 @@ public class AppointmentController {
         appointmentTime.setToTime(time.plusMinutes(duration));
 
         event.addAppointmentTime(appointmentTime);
-        eventService.saveEvent(event);
 
         User host = event.getUser();
         User client = userService.findById(sessionUserId).get();
@@ -58,14 +57,13 @@ public class AppointmentController {
     @GetMapping("/delete/{appointmentId}")
     public String delete(@PathVariable("appointmentId") int appointmentId,  Model model, HttpSession session) {
        int cancellationTime=30;
-        AppointmentTime appointmentTime=appointmentService.findById(appointmentId);
-       if(appointmentTime.getDate().isEqual(LocalDate.now())&&
+       AppointmentTime appointmentTime=appointmentService.findById(appointmentId);
+
+       if(appointmentTime.getDate().isAfter(LocalDate.now())||appointmentTime.getDate().isEqual(LocalDate.now())&&
           appointmentTime.getFromTime().isAfter(LocalTime.now().plusMinutes(cancellationTime/*appointmentTime.getEvent().getCancellationTime()*/-1)) )
         {
             appointmentService.deleteMeeting(appointmentTime.getDate(),appointmentTime.getFromTime(),appointmentTime.getToTime(),appointmentTime.getEvent().getId());
         }
-       System.out.println(appointmentTime.getDate().isEqual(LocalDate.now())&&
-               appointmentTime.getFromTime().isAfter(LocalTime.now().plusMinutes(cancellationTime-1)) );
         return "redirect:/event/appointments/"+appointmentTime.getUser().getId();
 
     }

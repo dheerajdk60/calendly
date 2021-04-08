@@ -4,35 +4,138 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .perEvent{
-            height: 3cm;
-            background-color: #444444;
-            color: white;
-            margin:20px;
-            border-radius: 20px;
-            border :2px solid greenyellow;
-            text-align: center;
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #111;
         }
         .container{
-            display: grid;
-            height: 100vh;
-            grid-template-columns: 33% 33% 33%;
-            background-color: black;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            flex-wrap: wrap;
+        }
+        .container .box
+        {
+            position: relative;
+            width: 320px;
+            height: 400px;
+            color: #fff;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 30px;
+            transition: 0.5s;
 
+        }
+        .container .box:hover
+        {
+            transform: translateY( -20px);
+        }
+        .container .box::before
+        {
+            content: '';
+            position: absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+        }
+        .container .box::after
+        {
+            content: '';
+            position: absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 100%;
+            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+            filter:blur(30px);
+        }
+      /*  .container .box:nth-child(2)::before,
+        .container .box:nth-child(2)::after{
+            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+        }*/
+
+        .container .box span{
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            bottom: 6px;
+            right: 6px;
+            background:rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .container .box span::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left:0;
+            width: 50%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+        .container .box .content
+        {
+            position: relative;
+            z-index: 10;
+            padding: 20px 40px;
+        }
+        .container .box .content h2
+        {
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 30px;
+
+        }
+        .container .box .content p
+        {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.4em;
+        }
+        .container .box .content a
+        {
+            display: inline-block;
+            font-size: 1.1em;
+            color: #111;
+            background: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        red{
+            color: red;
         }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <div th:each="event:${events}">
-        <div class="perEvent">
-            <div th:text="${event.name}"></div>
-            <div th:text="${event.description}"></div>
-            <div th:text="${event.durationUnit}"></div>
-            <div th:text="${event.eventCreatedAt}"></div>
-            <div th:text="${event.eventLife}"></div>
-            <a th:href="@{'/event/show/'+${event.id}+'/'+${sessionUserId}}">Book thiis</a>
+    <div class="box" th:each="event:${events}">
+        <span></span>
+        <div class="content">
+            <h2>[[${event.name}]]</h2>
+            <p>[[${event.description}]]</p>
+            <p>Duration <red>[[${event.durationUnit}]]</red> minutes</p>
+            <p>Created At <red>[[${event.eventCreatedAt}]]</red></p>
+            <p>Event is on for <red>[[${event.eventLife}]]</red> Days</p>
+            <a th:href="@{'/event/show/'+${event.id}+'/'+${sessionUserId}}">Book This</a>
         </div>
 
     </div>
