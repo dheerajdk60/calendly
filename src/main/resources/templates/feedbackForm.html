@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <style>
+    *{
+      margin:0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family:'Courier New', Courier, monospace;
+    }
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      height: fit-content;
+      background-color: #111;
+      background: -moz-linear-gradient(290deg,#6e2176,#ac0101);
+    }
+    .name{
+      display: inline-block;
+      position: relative;
+      top:10px;
+      color: white;
+      font-weight: 700;
+      height: 1cm;
+      transition: 0.3s;
+      letter-spacing: 2px;
+    }
+    .name:hover{
+      color: black;
+    }
+    .container{
+      margin-top: auto;
+      margin-bottom: auto;
+      margin: auto;
+      width: 25%;
+    }
+    .form{
+      position: relative;
+      top:10px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 0 0 15px 15px;
+      padding: 10px;
+
+    }
+
+    .newevent{
+      position: relative;
+      color: white;
+      font-weight: 800;
+      background: rgba(0,0,0,0.4);
+      border-radius: 15px 15px 0 0;
+      text-align: center;
+      height: 1.5cm;
+      font-size: 20px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: 0.5s;
+
+    }
+    .newevent:hover{
+      background-color: white;
+      color: black;
+    }
+    h2{
+      position: relative;
+      top:15px;
+    }
+    .input{
+      position: absolute;
+      right: 10px;
+      border-radius: 0px;
+      border: 3px solid #333333;
+      height: 1cm;
+      transition: 0.8s;
+
+    }
+    .input:hover
+    {
+      background-color: #333333;
+      color: white;
+      border: white 2px solid;
+    }
+    .submit{
+      position: relative;
+      margin-left: 37%;
+      margin-top:30px;
+      margin-bottom:30px;
+      width:1.5cm;
+      text-align: left;
+      font-weight: 700;
+      padding-left: 0;
+      border:1px solid #33ffdd;
+      padding:5px;
+      transition: 0.5s;
+    }
+    .submit:hover{
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="newevent"><h2>Feedback Form</h2></div>
+  <div class="form">
+    <form th:action="@{/sendFeedback}" >
+      <div class="name">Feedback</div><br>
+      <textarea th:type="text" name="feedbackMessage" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"></textarea><br><br>
+      <input class="submit" th:type="submit" th:value="Send">
+    </form>
+  </div>
+</div>
+</body>
+</html>

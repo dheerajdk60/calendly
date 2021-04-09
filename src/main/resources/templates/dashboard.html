@@ -231,7 +231,7 @@
         <div class="pageTitle"><h1>my Events</h1></div>
         <div class="form">
             <form th:action="@{/user/search}">
-                <input type="text" name="name" style="margin:10px;text-align: center;"><input type="submit" value="Search">
+                <input type="text" name="name" style="margin:10px;text-align: center;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><input type="submit" value="Search">
             </form>
         </div>
     </div>

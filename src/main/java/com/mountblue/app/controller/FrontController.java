@@ -7,7 +7,14 @@ import java.util.*;
 import com.mountblue.app.model.*;
 import com.mountblue.app.service.AppointmentService;
 import com.mountblue.app.service.EventService;
+import com.mountblue.app.service.SendEmailService;
 import com.mountblue.app.service.UserService;
+/*import com.twilio.Twilio;
+
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.type.PhoneNumber;*/
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +33,10 @@ public class FrontController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    SendEmailService sendEmailService;
+
 
     @GetMapping("/")
     public String home(Model model) {
@@ -112,6 +123,27 @@ public class FrontController {
         model.addAttribute("sessionUserId", sessionUserId);
         return "/showEvents";
     }
+    @GetMapping("/feedback")
+    public String feedback()
+    {
+        return "feedbackForm";
+    }
+    @GetMapping("/sendFeedback")
+    public String sendFeedback(@RequestParam("feedbackMessage")String feedackMessage,HttpSession  session)
+    {
+        int sessionUSerId=(int)session.getAttribute("sessionUserId");
+        User user=userService.findById(sessionUSerId).get();
+        String body="UserName : "+user.getName()+"\n Email : "+user.getEmail()+"\n Feedback : \n"+feedackMessage;
+        sendEmailService.sendEmail(body);
 
+       /* Twilio.init("ACea59a8f8f5f0e110961f0d22ae4fa3ca",
+                "c6dc48a899e7c7515fa70680ced7fbfb");
+        final PhoneNumber to = new PhoneNumber("+917026911691");
+        final PhoneNumber from = new PhoneNumber("+18588793644");
+        final MessageCreator creator = Message.creator(to, from, body);
+        creator.create();*/
+
+        return "redirect:/dashboard/"+sessionUSerId;
+    }
 
 }
