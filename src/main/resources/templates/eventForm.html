@@ -114,11 +114,11 @@
     <div class="form">
         <form  th:action="@{/event/insert}" th:object="${event}">
             <input th:type="hidden" name="userId" th:value="${userId}">
-            <div class="name">Event Name</div> <input class="input" th:type="text" th:field="*{name}"><br><br>
-            <div class="name">Event Description</div> <input class="input" th:type="text" th:field="*{description}"><br><br>
-            <div class="name">Event duration</div> <input class="input" th:type="text" th:field="*{durationUnit}"><br><br>
-            <div class="name">Event eventLife</div> <input class="input" th:type="text" th:field="*{eventLife}"><br><br>
-             <div class="name"> Event Cancellation time </div> <input class="input" th:type="text" th:field="*{cancellationTime}"><br><br>
+            <div class="name">Event Name</div> <input class="input" th:type="text" th:field="*{name}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <div class="name">Event Description</div> <input class="input" th:type="text" th:field="*{description}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <div class="name">Event duration</div> <input class="input" th:type="text" th:field="*{durationUnit}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <div class="name">Event eventLife</div> <input class="input" th:type="text" th:field="*{eventLife}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+             <div class="name"> Event Cancellation time </div> <input class="input" th:type="text" th:field="*{cancellationTime}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
             <button id="button" type="submit">Add availability</button>
             <div id="parentElement"></div>
             <input  class="submit" th:type="submit" value="Create Event">

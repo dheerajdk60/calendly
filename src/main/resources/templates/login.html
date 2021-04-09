@@ -37,14 +37,12 @@
             margin-top: auto;
             margin-bottom: auto;
             margin: auto;
-            width: 35%;
-            min-height: 70%;
+            width: 25%;
         }
         .form{
             position: relative;
             top:10px;
             background: rgba(0,0,0,0.2);
-            min-height: 70%;
             border-radius: 0 0 15px 15px;
             padding: 10px;
 
@@ -59,7 +57,9 @@
             text-align: center;
             height: 1.5cm;
             font-size: 20px;
-            transition: 0.2s;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: 0.5s;
 
         }
         .newevent:hover{
@@ -76,13 +76,21 @@
             border-radius: 0px;
             border: 3px solid #333333;
             height: 1cm;
+            transition: 0.8s;
+
+        }
+        .input:hover
+        {
+            background-color: #333333;
+            color: white;
+            border: white 2px solid;
         }
         .submit{
             position: relative;
             margin-left: 37%;
             margin-top:30px;
             margin-bottom:30px;
-            width:3cm;
+            width:1.5cm;
             text-align: left;
             font-weight: 700;
             padding-left: 0;
@@ -100,8 +108,8 @@
         <div class="newevent"><h2>Login</h2></div>
         <div class="form">
             <form th:action="@{/user/check}" >
-                <div class="name">Name</div><input th:type="text" name="name" class="input"><br>
-                <div class="name">Password</div><input th:type="password" name="password" class="input"><br>
+                <div class="name">Name</div><input th:type="text" name="name" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+                <div class="name">Password</div><input th:type="password" name="password" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
                 <input class="submit" th:type="submit" th:value="Login">
             </form>
         </div>

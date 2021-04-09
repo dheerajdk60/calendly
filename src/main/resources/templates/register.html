@@ -4,15 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Post Form</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            height: fit-content;
+            background-color: #111;
+            background: -moz-linear-gradient(290deg,#6e2176,#ac0101);
+        }
+        .name{
+            display: inline-block;
+            position: relative;
+            top:10px;
+            color: white;
+            font-weight: 700;
+            height: 1cm;
+            transition: 0.3s;
+        }
+        .name:hover{
+            color: black;
+        }
+        .container{
+            margin-top: auto;
+            margin-bottom: auto;
+            margin: auto;
+            width: 25%;
+            min-height: 70%;
+        }
+        .form{
+            position: relative;
+            top:10px;
+            background: rgba(0,0,0,0.2);
+            min-height: 70%;
+            border-radius: 0 0 15px 15px;
+            padding: 10px;
+
+        }
+
+        .newevent{
+            position: relative;
+            color: white;
+            font-weight: 800;
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            height: 1.5cm;
+            font-size: 20px;
+            transition: 0.5s;
+
+        }
+        .newevent:hover{
+            background-color: white;
+            color: black;
+        }
+        h2{
+            position: relative;
+            top:15px;
+        }
+        .input{
+            position: absolute;
+            right: 10px;
+            border-radius: 0px;
+            border: 3px solid #333333;
+            height: 1cm;
+            transition: 0.8s;
+        }
+        .input:hover
+        {
+            background-color: #333333;
+            color: white;
+            border: white 2px solid;
+        }
+        .submit{
+            position: relative;
+            margin-left: 37%;
+            margin-top:30px;
+            margin-bottom:30px;
+            width:2cm;
+            text-align: left;
+            font-weight: 700;
+            padding-left: 0;
+            border:1px solid #33ffdd;
+            padding:5px;
+            transition: 0.5s;
+        }
+        .submit:hover{
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <div class="content">
+    <div class="newevent"><h2>Sign Up</h2></div>
+    <div class="form">
         <form th:action="@{/user/add}" th:object="${user}">
-            Name:      <input class="title" th:type="text" th:field="*{name}"><br><br>
-            Email :    <input class="excerpt" th:type="text" th:field="*{email}"><br><br>
-            Password :   <input class="content" th:type="password" th:field="*{password}"><br><br>
-            <input class="button" type="submit" value="Add Post">
+            <div class="name">Name</div>      <input class="input" th:type="text" th:field="*{name}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <div class="name">Email</div> <input class="input" th:type="text" th:field="*{email}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <div class="name">Password</div>   <input class="input" th:type="password" th:field="*{password}" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <input class="submit" type="submit" value="Sign Up">
         </form>
     </div>
 
