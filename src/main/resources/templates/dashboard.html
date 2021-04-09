@@ -44,7 +44,9 @@
         }
         .container .box:hover
         {
-            transform: translateY( -20px);
+            transform-origin: center;
+            transform: translateY( -20px) rotate(5deg);
+
         }
         .container .box::before
         {
@@ -135,6 +137,7 @@
             align-items: center;
             justify-content: space-between;
         }
+
         a,input[type="submit"]
         {
             transition: 0.5s;

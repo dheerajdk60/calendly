@@ -19,4 +19,13 @@ public class SendEmailService {
         javaMailSender.send(simpleMailMessage);
 
     }
+
+    public void sendNotification(String body,String...to) {
+        SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
+        simpleMailMessage.setFrom("123dheerajkumarsharma@gmail.com");
+        simpleMailMessage.setTo(to);
+        simpleMailMessage.setSubject("Appointment Confirmation :From Calendly");
+        simpleMailMessage.setText(body);
+        javaMailSender.send(simpleMailMessage);
+    }
 }
