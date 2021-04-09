@@ -87,6 +87,7 @@ public class FrontController {
                     }
                 }
                 if (!flag) {
+                    if(date.isAfter(LocalDate.now()) || localTime.isAfter(LocalTime.now()))
                     times.add(localTime);
                 }
                 flag = false;
@@ -111,7 +112,6 @@ public class FrontController {
         model.addAttribute("sessionUserId", sessionUserId);
         return "/showEvents";
     }
-
 
 
 }

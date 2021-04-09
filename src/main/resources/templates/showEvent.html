@@ -46,16 +46,32 @@
             transform: scale(1.1);
             background: -moz-linear-gradient(45deg,#33ff52,#33ffdd);
         }
+        .feedback a{
+            position: fixed;
+            right:-60px;
+            top:60%;
+            height: 0.8cm;
+            transform-origin: 0 0;
+            transform: rotate(270deg);
+            background-color: #ddd;
+            text-decoration: none;
+            color: black;
+            font-weight: 900;
+            padding: 5px;
+            border-bottom: 1px solid white;
+            transition: 0.5s;
+            border-radius: 10px 10px 0 0;
+        }
+        .feedback a:hover {
+            color: white;
+            background-color: black;
+            border: 2px solid white;
+        }
     </style>
 </head>
 <body>
-   <!-- <div>[[${event.id}]]</div>
-    <div>[[${event.name}]]</div>
-    <div>[[${event.description}]]</div>
-    <div>[[${event.durationUnit}]]</div>
-    <div>[[${event.eventCreatedAt}]]</div>
-    <div>[[${event.eventLife}]]ife}]]</div>-->
     <div class="container">
+        <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
         <div th:each="date:${dates}">
             <a th:href="@{'/date/'+${event.getId()}+'/'+${sessionUserId}+'/'+${''+date}  } " >[[${date}]]</a>
         </div>

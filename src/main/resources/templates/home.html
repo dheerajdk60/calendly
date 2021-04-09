@@ -7,10 +7,157 @@
           rel="stylesheet">
     <meta charset="UTF-8">
     <title>Home</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            display: flex;
+            min-height: 100vh;
+            height: fit-content;
+            background-color: #111;
+            background: -moz-linear-gradient(290deg,#111111,#222222);
+        }
+        .container
+        {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            position: relative;
+
+        }
+        .top
+        {
+            display: flex;
+            width: 100%;
+            position: relative;
+            justify-content: space-between;
+
+        }
+        .signin-signup{
+            display: flex;
+            position: relative;
+        }
+        .contact-about{
+            display: flex;
+            position: relative;
+        }
+        a {
+            text-decoration: none;
+            color: #111111;
+            margin: 0;
+            padding: 0;
+        }
+        .signin-signup a{
+            text-decoration: none;
+            color: white;
+            font-weight: 900;
+            height: 1cm;
+            padding: 5px;
+            border-bottom: 1px solid white;
+            margin: 30px 50px 10px 30px;
+            transition: 0.5s;
+            font-size: 20px;
+        }
+        .signin-signup a:hover {
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+        }
+        .contact-about a{
+            text-decoration: none;
+            color: white;
+            font-weight: 900;
+            height: 1cm;
+            padding: 5px;
+            border-bottom: 1px solid white;
+            margin: 30px 50px 10px 30px;
+            transition: 0.5s;
+            font-size: 20px;
+        }
+        .contact-about a:hover {
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+        }
+        .feedback a{
+            position: fixed;
+            right:-60px;
+            top:60%;
+            height: 0.8cm;
+            transform-origin: 0 0;
+            transform: rotate(270deg);
+            background-color: #ddd;
+            text-decoration: none;
+            color: black;
+            font-weight: 900;
+            padding: 5px;
+            border-bottom: 1px solid white;
+            transition: 0.5s;
+            border-radius: 10px 10px 0 0;
+        }
+        .feedback a:hover {
+            color: white;
+            background-color: black;
+            border: 2px solid white;
+        }
+        .contact-about{
+            display: flex;
+        }
+        .video{
+            position: fixed;
+            top:30%;
+            right:5%;
+        }
+        .text{
+            position: fixed;
+            top:30%;
+            left:5%;
+        }
+        h2,p{
+            color: white;
+            letter-spacing: 2px;
+        }
+        .heading{
+            margin-bottom: 20px;
+        }
+
+    </style>
 </head>
 <body>
-            <a th:href="@{/login}">Log In</a>
-            <a th:href="@{/register}">Sign Up</a>
+      <div class="container">
+          <div class="top">
+              <div class="contact-about">
+                  <a th:href="@{/aboutUs}">About Us</a>
+                  <a th:href="@{/contactUs}">Contact Us</a>
+              </div>
 
+              <div class="signin-signup">
+                  <a th:href="@{/login}">Log In</a>
+                  <a th:href="@{/register}">Sign Up</a>
+              </div>
+
+          </div>
+          <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
+
+          <div class="video">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/RYCGLSooIAo?autoplay=1&loop=1"></iframe>
+          </div>
+          <div class="text">
+              <div class="heading">
+                  <h2>
+                      Watch our video
+                  </h2>
+              </div>
+              <div class="content">
+                  <p>
+                      We take the work out of connecting with others<br> so you can accomplish more. Learn how painless <br>scheduling can be with Calendly.
+                  </p>
+              </div>
+          </div>
+      </div>
 </body>
 </html>

@@ -52,7 +52,7 @@ public class AppointmentController {
         client.addAppointmentTime(appointmentTime);
         userService.saveUser(client);
 
-        return "redirect:/";
+        return "redirect:/dashboard/"+sessionUserId;
     }
     @GetMapping("/delete/{appointmentId}")
     public String delete(@PathVariable("appointmentId") int appointmentId,  Model model, HttpSession session) {
