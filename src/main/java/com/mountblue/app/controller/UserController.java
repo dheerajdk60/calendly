@@ -29,7 +29,7 @@ public class UserController
 
     @GetMapping("/add")
     public String addUser(@ModelAttribute("user") User user) {
-
+       // user.setRoles("ROLE_USER");
         userService.saveUser(user);
         return "redirect:/";
     }

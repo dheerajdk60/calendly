@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 hasAnyRole("ADMIN","USER")
                 .antMatchers(
                         "/*",
+                        "/user/*",
                         "home").
                 permitAll()
                 .anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard").failureUrl("/login").
