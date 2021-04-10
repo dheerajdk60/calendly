@@ -46,7 +46,7 @@
         .container .box:hover
         {
             transform-origin: center;
-            transform: translateY( -20px) rotate(5deg);
+            transform: translateY( -20px);
 
         }
         .container .box::before
@@ -220,6 +220,7 @@
             border-radius: 10px 10px 0 0;
         }
         .feedback a:hover {
+            transform: rotate(270deg);
             color: white;
             background-color: black;
             border: 2px solid white;
@@ -278,6 +279,19 @@
         button:hover{
             border-bottom: 1px solid white;
         }
+        #delete{
+            background-color: #db2e2e;
+        }
+        #delete:hover{
+            background-color: #111111;
+            color: #db2e2e;
+            border: 2px solid #db2e2e;
+        }
+        #edit:hover{
+            background-color: #111111;
+            color: white;
+            border: 2px solid white;
+        }
     </style>
 </head>
 <body>
@@ -318,7 +332,7 @@
                 <p>Duration <red>[[${event.durationUnit}]]</red> minutes</p>
                 <p>Created At <red>[[${event.eventCreatedAt}]]</red></p>
                 <p>Event is on for <red>[[${event.eventLife}]]</red> Days</p>
-                <a th:href="@{'/event/edit/'+${event.id}}">Edit</a>
+                <a id="edit" th:href="@{'/event/edit/'+${event.id}}">Edit</a>|<a id="delete" th:href="@{'/event/delete/'+${event.id}}">Delete</a>
             </div>
 
         </div>

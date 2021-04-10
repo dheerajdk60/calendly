@@ -4,10 +4,13 @@ import com.mountblue.app.model.AllowedTime;
 import com.mountblue.app.model.AppointmentTime;
 import com.mountblue.app.model.Event;
 import com.mountblue.app.model.User;
+import com.mountblue.app.service.AllowedTimeService;
 import com.mountblue.app.service.AppointmentService;
 import com.mountblue.app.service.EventService;
 import com.mountblue.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +40,9 @@ public class EventController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private AllowedTimeService allowedTimeService;
 
     @GetMapping("/create/{userId}")
     public String eventCreate(@PathVariable("userId") int userId, Model model) {
@@ -70,6 +76,7 @@ public class EventController {
                               @RequestParam String[] fromTime,
                               @RequestParam String[] toTime)
     {
+        System.out.println("event id is "+event.getId());
         if(event.getId()==0)
         {
 
@@ -94,7 +101,22 @@ public class EventController {
         }
         else
         {
+            allowedTimeService.deleteByEventId(event.getId());
+            for (int i = 0; i < toTime.length; i++) {
+                AllowedTime allowedTime = new AllowedTime();
 
+                String from[] = fromTime[i].split("[^0-9]");
+                String to[] = toTime[i].split("[^0-9]");
+
+                allowedTime.setFromTime(LocalTime.parse(from[HOUR] + ":" + (MINUTE < from.length ? from[MINUTE] : "00")));
+                allowedTime.setToTime(LocalTime.parse(to[HOUR] + ":" + (MINUTE < to.length ? to[MINUTE] : "00")));
+
+                event.addAllowedTime(allowedTime);
+            }
+            event.setEventCreatedAt(LocalDate.now());
+            User user=userService.findById(getCurrentUserId()).get();
+            user.addEvent(event);
+            userService.saveUser(user);
         }
         return "redirect:/dashboard/" + userId;
     }
@@ -111,9 +133,28 @@ public class EventController {
     public String editEvent( @PathVariable("eventId") int eventId,Model model) {
         Optional<Event> optional = eventService.findById(eventId);
         Event event = optional.get();
-
+        model.addAttribute("userId", getCurrentUserId());
         model.addAttribute("event",event);
         return "eventForm";
+    }
+    @GetMapping("/delete/{eventId}")
+    public String deleteEvent( @PathVariable("eventId") int eventId,Model model) {
+        eventService.deleteById(eventId);
+        return "redirect:/";
+    }
+    public int getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = null;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        if (username.equals("anonymousUser")) {
+            return -1;
+        }
+        User user = userService.findByName(username).get();
+        return user.getId();
     }
 
 }
