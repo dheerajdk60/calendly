@@ -22,9 +22,9 @@ public class UserController
     private UserService userService;
 
     @GetMapping("/search")
-    public String home(@RequestParam("name") String name) {
+    public String home(@RequestParam("name") String userName) {
 
-        return "redirect:/"+name;
+        return "redirect:/"+userName;
     }
 
     @GetMapping("/add")
