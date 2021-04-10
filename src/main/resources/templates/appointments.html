@@ -54,7 +54,7 @@
             left:0px;
             width: 100%;
             height: 100%;
-            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+            background: -moz-linear-gradient(315deg,#00ff80,#7c9c8c);
         }
         .container .box::after
         {
@@ -64,8 +64,8 @@
             left:0px;
             width: 100%;
             height: 100%;
-            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
-            filter:blur(30px);
+            background: -moz-linear-gradient(315deg,#00ff80,#7c9c8c);
+            filter:blur(3px);
         }
         /*  .container .box:nth-child(2)::before,
           .container .box:nth-child(2)::after{
@@ -120,7 +120,14 @@
             padding: 10px;
             text-decoration: none;
             font-weight: 700;
+            transition: 0.5s;
         }
+        .container .box .content a:hover
+        {
+            background-color: black;
+            color: white;
+        }
+
 
         a,input[type="submit"] {
             margin: 10px;
@@ -178,9 +185,76 @@
             background-color: black;
             border: 2px solid white;
         }
+        .topleft{
+            display: flex;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            font-size: 20px;
+            margin:10px;
+            padding: 10px;
+            position: fixed;
+            top: 0px;
+        }
+        .navigation{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .dash{
+            margin: 10px;
+            display: inline;
+            position: relative;
+            bottom: 8px;
+        }
+        .dash a{
+            padding: 0;
+            margin: 0;
+            background-color: #111;
+            color: white;
+
+            font-size: 18px;
+            transition: 0.5s;
+        }
+        .dash a:hover{
+            border-bottom: white 1px solid;
+        }
+        .username{
+            display: inline;
+        }
+        .topright{
+            display: inline;
+
+        }
+        button{
+            color: white;
+            background-color: #111111;
+            font-weight: 700;
+            font-size: 17px;
+            border: none;
+            letter-spacing: 3px;
+            position: absolute;
+            top:20px;
+            right:20px;
+        }
+        button:hover{
+            border-bottom: 1px solid white;
+        }
     </style>
 </head>
 <body>
+<div class="navigation">
+    <div class="topleft">
+        <div class="username">Welcome <span th:text="${#authentication.name}"></span>|</div>
+        <div class="dash"><a th:href="@{'/dashboard/'+${#authentication.principal.getId()}}">My Dashboard</a></div>
+    </div>
+    <div class="topright">
+        <form th:action="@{/logout}" method="post">
+            <button>Logout</button>
+        </form>
+    </div>
+</div>
     <div class="container">
         <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
         <div th:if="${appointmentTimes.size()==0}" class="content"><h1 class="announcement">No Appointments Yet!!!</h1><h1 class="announcementBlack">No Appointments Yet!!!</h1></div>

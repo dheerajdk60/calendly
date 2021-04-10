@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String roles="ROLE_USER";
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
@@ -72,6 +73,14 @@ public class User {
 
     public List<Event> getEvents() {
         return events;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public void setEvents(List<Event> events) {

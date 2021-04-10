@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,9 +13,11 @@
         }
         body{
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            flex-wrap: wrap;
             background-color: #111;
         }
         .container{
@@ -22,14 +25,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 0;
             flex-wrap: wrap;
         }
         .container .box
         {
             position: relative;
             width: 320px;
-            height: 400px;
+            height: 380px;
             color: #fff;
             background-color: #111;
             display: flex;
@@ -43,6 +45,7 @@
         {
             transform-origin: center;
             transform: translateY( -20px) rotate(5deg);
+
         }
         .container .box::before
         {
@@ -52,7 +55,7 @@
             left:0px;
             width: 100%;
             height: 100%;
-            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+            background: -moz-linear-gradient(315deg,#00ff80,#7c9c8c);
         }
         .container .box::after
         {
@@ -62,13 +65,17 @@
             left:0px;
             width: 100%;
             height: 100%;
-            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
-            filter:blur(30px);
+            background: -moz-linear-gradient(315deg,#00ff80,#7c9c8c);
+            filter:blur(3px);
         }
-      /*  .container .box:nth-child(2)::before,
-        .container .box:nth-child(2)::after{
-            background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
-        }*/
+        /*
+        7c9c8c
+        41f098
+        */
+        /*  .container .box:nth-child(2)::before,
+          .container .box:nth-child(2)::after{
+              background: -moz-linear-gradient(315deg,#03a9f4,#4dff03);
+          }*/
 
         .container .box span{
             position: absolute;
@@ -119,13 +126,84 @@
             padding: 10px;
             text-decoration: none;
             font-weight: 700;
+            transition: 0.5s;
         }
+
         red{
             color: red;
         }
+        .navbar{
+            position: absolute;
+            display: flex;
+            flex-wrap: wrap;
+            top:0;
+            left:0;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        a,input[type="submit"]
+        {
+            transition: 0.5s;
+            margin: 20px;
+            display: inline-block;
+            font-size: 1.1em;
+            color: #111;
+            background: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .form{
+            position: relative;
+            display: flex;
+        }
+        input[type="text"]
+        {
+            font-size: 1.3em;
+            border-radius: 0;
+            height: 1cm;
+            width: 4cm;
+        }
+        .event{
+            position: relative;
+            display: flex;
+        }
+        .pageTitle
+        {
+            position: relative;
+            display: flex;
+            text-transform: capitalize;
+
+        }
+        .pageTitle h1{
+            font-size: 2.5em;
+            color: white;
+            border-bottom: white 3px solid;
+        }
+        .big-container a:hover
+        {
+            transform: scale(1.3);
+            background: -moz-linear-gradient(315deg,#2edb85,#7c9c8c);
+        }
+        input[type="submit"]:hover
+        {
+            transform: scale(1.2);
+            background: -moz-linear-gradient(315deg,#2edb85,#7c9c8c);
+        }
+        .big-container{
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
         .feedback a{
             position: fixed;
-            right:-60px;
+            right:-84px;
             top:60%;
             height: 0.8cm;
             transform-origin: 0 0;
@@ -144,24 +222,90 @@
             background-color: black;
             border: 2px solid white;
         }
+        .topleft{
+            display: flex;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            font-size: 20px;
+            margin:10px;
+            padding: 10px;
+        }
+        .navigation{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .dash{
+            margin: 10px;
+            display: inline;
+            position: relative;
+            bottom: 8px;
+        }
+        .dash a{
+            padding: 0;
+            margin: 0;
+            background-color: #111;
+            color: white;
+
+            font-size: 18px;
+            transition: 0.5s;
+        }
+        .dash a:hover{
+            border-bottom: white 1px solid;
+        }
+        .username{
+            display: inline;
+        }
+        .topright{
+            display: inline;
+
+        }
+        button{
+            color: white;
+            background-color: #111111;
+            font-weight: 700;
+            font-size: 17px;
+            border: none;
+            letter-spacing: 3px;
+            position: absolute;
+            top:20px;
+            right:20px;
+        }
+        button:hover{
+            border-bottom: 1px solid white;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
-    <div class="box" th:each="event:${events}">
-        <span></span>
-        <div class="content">
-            <h2>[[${event.name}]]</h2>
-            <p>[[${event.description}]]</p>
-            <p>Duration <red>[[${event.durationUnit}]]</red> minutes</p>
-            <p>Created At <red>[[${event.eventCreatedAt}]]</red></p>
-            <p>Event is on for <red>[[${event.eventLife}]]</red> Days</p>
-            <a th:href="@{'/event/show/'+${event.id}+'/'+${sessionUserId}}">Book This</a>
-        </div>
-
+<div class="navigation">
+    <div class="topleft">
+        <div class="username">Welcome <span th:text="${#authentication.name}"></span>|</div>
+        <div class="dash"><a th:href="@{'/dashboard/'+${#authentication.principal.getId()}}">My Dashboard</a></div>
+    </div>
+    <div class="topright">
+        <form th:action="@{/logout}" method="post">
+            <button>Logout</button>
+        </form>
     </div>
 </div>
+<div class="big-container">
+    <div class="container">
+        <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
+        <div class="box" th:each="event:${events}">
+            <span></span>
+            <div class="content">
+                <h2>[[${event.name}]]</h2>
+                <p>[[${event.description}]]</p>
+                <p>Duration <red>[[${event.durationUnit}]]</red> minutes</p>
+                <p>Created At <red>[[${event.eventCreatedAt}]]</red></p>
+                <p>Event is on for <red>[[${event.eventLife}]]</red> Days</p>
+                <a th:href="@{'/event/show/'+${event.id}+'/'+${sessionUserId}}">Book This</a>
+            </div>
 
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -102,9 +102,74 @@
     .submit:hover{
       color: white;
     }
+    .topleft{
+      display: flex;
+      color: white;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: capitalize;
+      font-size: 20px;
+      margin:10px;
+      padding: 10px;
+    }
+    .navigation{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .dash{
+      margin: 10px;
+      display: inline;
+      position: relative;
+      bottom: 8px;
+    }
+    .dash a{
+      padding: 0;
+      margin: 0;
+      background-color: #111;
+      color: white;
+
+      font-size: 18px;
+      transition: 0.5s;
+    }
+    .dash a:hover{
+      border-bottom: white 1px solid;
+    }
+    .username{
+      display: inline;
+    }
+    .topright{
+      display: inline;
+
+    }
+    button{
+      color: white;
+      background-color: #111111;
+      font-weight: 700;
+      font-size: 17px;
+      border: none;
+      letter-spacing: 3px;
+      position: absolute;
+      top:20px;
+      right:20px;
+    }
+    button:hover{
+      border-bottom: 1px solid white;
+    }
   </style>
 </head>
 <body>
+<div class="navigation">
+  <div class="topleft">
+    <div class="username">Welcome <span th:text="${#authentication.name}"></span>|</div>
+    <div class="dash"><a th:href="@{'/dashboard/'+${#authentication.principal.getId()}}">My Dashboard</a></div>
+  </div>
+  <div class="topright">
+    <form th:action="@{/logout}" method="post">
+      <button>Logout</button>
+    </form>
+  </div>
+</div>
 <div class="container">
   <div class="newevent"><h2>Feedback Form</h2></div>
   <div class="form">

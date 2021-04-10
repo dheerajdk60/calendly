@@ -16,6 +16,8 @@ import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;*/
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,11 @@ public class FrontController {
 
     @GetMapping("/")
     public String home(Model model) {
-
+        int id = getCurrentUserId();
+        if(id!=-1)
+        {
+            return "redirect:/dashboard/"+id;
+        }
         return "home";
     }
 
@@ -50,13 +56,6 @@ public class FrontController {
         User user = new User();
         model.addAttribute("user", user);
         return "register";
-    }
-
-
-    @GetMapping("/login")
-    public String login() {
-
-        return "login";
     }
 
     @GetMapping("/dashboard/{userId}")
@@ -69,7 +68,7 @@ public class FrontController {
     }
 
     @GetMapping("/date/{eventId}/{sessionUserId}/{m}/{d}/{y}")
-    public String date(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("m") int m, @PathVariable("d") int d, @PathVariable("y") int y, Model model, HttpSession session) {
+    public String date(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("m") int m, @PathVariable("d") int d, @PathVariable("y") int y, Model model) {
         boolean flag = false;
         LocalDate date = LocalDate.of(2000 + y, m, d);
 
@@ -98,8 +97,8 @@ public class FrontController {
                     }
                 }
                 if (!flag) {
-                    if(date.isAfter(LocalDate.now()) || localTime.isAfter(LocalTime.now()))
-                    times.add(localTime);
+                    if (date.isAfter(LocalDate.now()) || localTime.isAfter(LocalTime.now()))
+                        times.add(localTime);
                 }
                 flag = false;
             }
@@ -111,10 +110,19 @@ public class FrontController {
         return "selectTimePage";
     }
 
-    @GetMapping("/{userName}")
-    public String userName(@PathVariable("userName") String userName, Model model, HttpSession session) {
-        int sessionUserId = (int) session.getAttribute("sessionUserId");
+    @GetMapping("/login")
+    public String login(Model model) {
 
+        System.out.println("signin clicked");
+        return "login";
+    }
+
+
+    @GetMapping("/{userName}")
+    public String userName(@PathVariable("userName") String userName, Model model) {
+        int sessionUserId = getCurrentUserId();
+        if (userName.equals("dashboard"))
+            return "redirect:/dashboard/" + sessionUserId;
         Optional<User> optional = userService.findByName(userName);
         User user = optional.get();
         List<Event> events = user.getEvents();
@@ -123,17 +131,17 @@ public class FrontController {
         model.addAttribute("sessionUserId", sessionUserId);
         return "/showEvents";
     }
+
     @GetMapping("/feedback")
-    public String feedback()
-    {
+    public String feedback() {
         return "feedbackForm";
     }
+
     @GetMapping("/sendFeedback")
-    public String sendFeedback(@RequestParam("feedbackMessage")String feedackMessage,HttpSession  session)
-    {
-        int sessionUSerId=(int)session.getAttribute("sessionUserId");
-        User user=userService.findById(sessionUSerId).get();
-        String body="UserName : "+user.getName()+"\n Email : "+user.getEmail()+"\n Feedback : \n"+feedackMessage;
+    public String sendFeedback(@RequestParam("feedbackMessage") String feedackMessage) {
+        int sessionUserId = getCurrentUserId();
+        User user = userService.findById(sessionUserId).get();
+        String body = "UserName : " + user.getName() + "\n Email : " + user.getEmail() + "\n Feedback : \n" + feedackMessage;
         sendEmailService.sendEmail(body);
 
        /* Twilio.init("ACea59a8f8f5f0e110961f0d22ae4fa3ca",
@@ -143,7 +151,23 @@ public class FrontController {
         final MessageCreator creator = Message.creator(to, from, body);
         creator.create();*/
 
-        return "redirect:/dashboard/"+sessionUSerId;
+        return "redirect:/dashboard/" + sessionUserId;
     }
+
+    public int getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = null;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        if (username.equals("anonymousUser")) {
+            return -1;
+        }
+        User user = userService.findByName(username).get();
+        return user.getId();
+    }
+
 
 }

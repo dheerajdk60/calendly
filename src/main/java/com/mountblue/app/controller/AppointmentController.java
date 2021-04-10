@@ -32,7 +32,7 @@ public class AppointmentController {
     private SendEmailService sendEmailService;
 
     @GetMapping("/{eventId}/{sessionUserId}/{date}/{time}")
-    public String appoint(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("time") String timeStr, @PathVariable("date") String dateStr, Model model, HttpSession session) {
+    public String appoint(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, @PathVariable("time") String timeStr, @PathVariable("date") String dateStr) {
         Event event = eventService.findById(eventId).get();
         int duration = event.getDurationUnit();
 
@@ -62,7 +62,7 @@ public class AppointmentController {
         return "redirect:/dashboard/"+sessionUserId;
     }
     @GetMapping("/delete/{appointmentId}")
-    public String delete(@PathVariable("appointmentId") int appointmentId,  Model model, HttpSession session) {
+    public String delete(@PathVariable("appointmentId") int appointmentId) {
        int cancellationTime=30;
        AppointmentTime appointmentTime=appointmentService.findById(appointmentId);
 

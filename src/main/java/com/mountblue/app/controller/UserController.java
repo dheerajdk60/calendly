@@ -34,18 +34,5 @@ public class UserController
         return "redirect:/";
     }
 
-    @GetMapping("/check")
-    public String check(@RequestParam("name") String name, @RequestParam("password") String pass, Model model, HttpSession session) {
 
-        Optional<User> optional = userService.findByName(name);
-        if (optional.isPresent()) {
-            User user = optional.get();
-            if (user.getPassword().equals(pass)) {
-                session.setAttribute("sessionUserId", user.getId());
-                model.addAttribute("user", user);
-                return "redirect:/dashboard/" + user.getId();
-            }
-        }
-        return "redirect:/login";
-    }
 }

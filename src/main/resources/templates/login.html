@@ -130,9 +130,9 @@
         <div class="feedback"><a th:href="@{/feedback}" >Feedback</a></div>
         <div class="newevent"><h2>Login</h2></div>
         <div class="form">
-            <form th:action="@{/user/check}" >
-                <div class="name">Name</div><input th:type="text" name="name" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
-                <div class="name">Password</div><input th:type="password" name="password" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+            <form th:action="@{/login}" method="post">
+                <div class="name">Name</div><input th:type="text" name="username" id="username" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
+                <div class="name">Password</div><input th:type="password" name="password" id="password" class="input" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"><br><br>
                 <input class="submit" th:type="submit" th:value="Login">
             </form>
         </div>

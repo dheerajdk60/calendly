@@ -48,7 +48,7 @@ public class EventController {
         return "eventForm";
     }
     @GetMapping("/show/{eventId}/{sessionUserId}")
-    public String showEvent(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, Model model, HttpSession session) {
+    public String showEvent(@PathVariable("sessionUserId") int sessionUserId, @PathVariable("eventId") int eventId, Model model) {
         Optional<Event> optional = eventService.findById(eventId);
         Event event = optional.get();
 
@@ -61,33 +61,41 @@ public class EventController {
         model.addAttribute("event", event);
         model.addAttribute("sessionUserId", sessionUserId);
         model.addAttribute("dates", dates);
-        return "/showEvent";
+        return "showEvent";
     }
     @GetMapping("/insert")
     public String eventInsert(@RequestParam("userId") int userId,
                               @ModelAttribute("event") Event event,
                               Model model,
                               @RequestParam String[] fromTime,
-                              @RequestParam String[] toTime) {
-        Optional<User> optional = userService.findById(userId);
-        User user = optional.get();
+                              @RequestParam String[] toTime)
+    {
+        if(event.getId()==0)
+        {
 
-        event.setEventCreatedAt(LocalDate.now());
+            Optional<User> optional = userService.findById(userId);
+            User user = optional.get();
 
-        for (int i = 0; i < toTime.length; i++) {
-            AllowedTime allowedTime = new AllowedTime();
+            event.setEventCreatedAt(LocalDate.now());
 
-            String from[] = fromTime[i].split("[^0-9]");
-            String to[] = toTime[i].split("[^0-9]");
+            for (int i = 0; i < toTime.length; i++) {
+                AllowedTime allowedTime = new AllowedTime();
 
-            allowedTime.setFromTime(LocalTime.parse(from[HOUR] + ":" + (MINUTE < from.length ? from[MINUTE] : "00")));
-            allowedTime.setToTime(LocalTime.parse(to[HOUR] + ":" + (MINUTE < to.length ? to[MINUTE] : "00")));
+                String from[] = fromTime[i].split("[^0-9]");
+                String to[] = toTime[i].split("[^0-9]");
 
-            event.addAllowedTime(allowedTime);
+                allowedTime.setFromTime(LocalTime.parse(from[HOUR] + ":" + (MINUTE < from.length ? from[MINUTE] : "00")));
+                allowedTime.setToTime(LocalTime.parse(to[HOUR] + ":" + (MINUTE < to.length ? to[MINUTE] : "00")));
+
+                event.addAllowedTime(allowedTime);
+            }
+            user.addEvent(event);
+            userService.saveUser(user);
         }
-        user.addEvent(event);
-        userService.saveUser(user);
+        else
+        {
 
+        }
         return "redirect:/dashboard/" + userId;
     }
     @GetMapping("/appointments/{userId}")
@@ -98,6 +106,14 @@ public class EventController {
         appointmentTimes.removeAll(oldAppointments);
         model.addAttribute("appointmentTimes", appointmentTimes);
         return "appointments";
+    }
+    @GetMapping("/edit/{eventId}")
+    public String editEvent( @PathVariable("eventId") int eventId,Model model) {
+        Optional<Event> optional = eventService.findById(eventId);
+        Event event = optional.get();
+
+        model.addAttribute("event",event);
+        return "eventForm";
     }
 
 }
