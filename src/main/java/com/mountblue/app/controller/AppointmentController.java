@@ -67,7 +67,7 @@ public class AppointmentController {
        AppointmentTime appointmentTime=appointmentService.findById(appointmentId);
 
        if(appointmentTime.getDate().isAfter(LocalDate.now())||appointmentTime.getDate().isEqual(LocalDate.now())&&
-          appointmentTime.getFromTime().isAfter(LocalTime.now().plusMinutes(cancellationTime/*appointmentTime.getEvent().getCancellationTime()*/-1)) )
+          appointmentTime.getFromTime().isAfter(LocalTime.now().plusMinutes(appointmentTime.getEvent().getCancellationTime()-1)) )
         {
             appointmentService.deleteMeeting(appointmentTime.getDate(),appointmentTime.getFromTime(),appointmentTime.getToTime(),appointmentTime.getEvent().getId());
         }
